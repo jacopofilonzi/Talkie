@@ -1,0 +1,78 @@
+@import url("./Colors.css");
+@import url("./Fonts.css");
+
+
+body {
+    background-color: var(--col-light-bg);
+    color: var(--col-light-text);
+
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    
+
+    >.content {
+        flex: 1;
+
+        h1 {
+            margin: 0;
+            
+            color: var(--col-light-text);
+            font-size: xxx-large;
+            font-weight: 300;
+            letter-spacing: 1.5px;
+    
+            opacity: .9;
+            font-weight: 600;
+        }
+    
+        h2 {
+            margin: 0 0 8px 0;
+            
+            color: var(--col-light-text);
+            font-weight: 700;
+    
+            opacity: .9;
+            font-weight: 600;
+        }
+    
+        p {
+            margin-top: 0;
+            line-height: 1.3;
+
+            &.text-justify {
+                text-align: justify;
+            }
+        }
+
+    
+    
+    }
+
+    header {
+        nav {
+            background-color: var(--col-light-secondary);
+    
+        }
+    }
+    
+    footer {
+        background-color: var(--col-light-secondary);
+        margin-top: auto;
+    }
+}
+
+a {
+    text-decoration: none;
+
+    &:hover, &:active {
+        text-decoration: underline;
+    }
+}
+
+.hidden {
+    display: none;
+}
