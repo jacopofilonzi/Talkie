@@ -1,6 +1,10 @@
 <?php
     include_once $_SERVER["DOCUMENT_ROOT"] . "/inc/config.inc.php";
+    include_once $root . "/inc/protected.inc.php";
+    
     $pageTitle = "Chat";
+
+
 ?>
 
 <!DOCTYPE html>
