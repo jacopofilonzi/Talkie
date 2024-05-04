@@ -18,6 +18,6 @@
     </div>
 
     <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-        <li class="mx-3"><a class="text-muted" href="https://github.com/jacopofilonzi/talkie" target="_blank"><i class="bi bi-github"></i></a></li>
+        <li class="mx-3"><a class="text-white" href="https://github.com/jacopofilonzi/talkie" target="_blank"><i class="bi bi-github"></i></a></li>
     </ul>
 </footer>
