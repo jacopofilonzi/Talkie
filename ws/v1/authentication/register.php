@@ -1,7 +1,7 @@
 <?php
     include_once $_SERVER['DOCUMENT_ROOT'] . "/inc/config.inc.php";
-    include_once $_SERVER['DOCUMENT_ROOT'] . "/class/dmo/user.cls.php";
-    include_once $_SERVER['DOCUMENT_ROOT'] . "/class/bl/user.cls.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/class/dmo/UserDMO.cls.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/class/bl/UserBL.cls.php";
 
     $today = new DateTime();
     
@@ -25,10 +25,10 @@
 
 
         //Reject external clients
-        if (!$internal) {
+        if (!$internal && !$AllowExternal) {
             http_response_code(401);
             echo json_encode(array('error' => 'Unauthorized'));
-            die();
+            exit();
         }
 
 
@@ -41,7 +41,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Name is required'));
-                die();
+                exit();
             }
         else if (strlen($_POST['Name']) <= $MinNameLength)
             if ($internal) {
@@ -49,7 +49,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Name is too short'));
-                die();
+                exit();
             }
         else if (strlen($_POST['Name']) >= $MaxNameLength)
             if ($internal) {
@@ -57,7 +57,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Name is too long'));
-                die();
+                exit();
             }
 
         
@@ -68,7 +68,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Surname is required'));
-                die();
+                exit();
             }
         else if (strlen($_POST['Surname']) <= $MinSurnameLength)
             if ($internal) {
@@ -76,7 +76,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Surname is too short'));
-                die();
+                exit();
             }
         else if (strlen($_POST['Surname']) >= $MaxSurnameLength)
             if ($internal) {
@@ -84,7 +84,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Surname is too long'));
-                die();
+                exit();
             }
 
         
@@ -95,7 +95,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Birthday is required'));
-                die();
+                exit();
             }
         else if (strlen($_POST['DateOfBirth']) != 10)
             if ($internal) {
@@ -103,7 +103,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Invalid date of birth'));
-                die();
+                exit();
             }
         else if ($today->diff(new DateTime($_POST["DateOfBirth"]))->y > $MinAge && $today->diff(new DateTime($_POST["DateOfBirth"]))->m > 0 && $today->diff(new DateTime($_POST["DateOfBirth"]))->d > 0)
             if ($internal) {
@@ -111,7 +111,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'You must be at least 13 years old'));
-                die();
+                exit();
             }
 
         
@@ -122,7 +122,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Email is required'));
-                die();
+                exit();
             }
         else if (!filter_var($_POST['Email'], FILTER_VALIDATE_EMAIL))
             if ($internal) {
@@ -130,7 +130,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Invalid email'));
-                die();
+                exit();
             }
 
         
@@ -141,7 +141,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Password is required'));
-                die();
+                exit();
             }
         else if (strlen($_POST['Password']) < $MinPasswordLength)
             if ($internal) {
@@ -149,7 +149,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Password is too short'));
-                die();
+                exit();
             }
         else if ($_POST['Password'] != $_POST['PasswordConfirm'])
             if ($internal) {
@@ -157,7 +157,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'Passwords do not match, you must send "Password" and "PasswordConfirm" with the same value'));
-                die();
+                exit();
             }
 
         
@@ -168,7 +168,7 @@
             } else {
                 http_response_code(400);
                 echo json_encode(array('error' => 'You must accept the Terms of Service (ToSacknowledge)'));
-                die();
+                exit();
             }
 
         #endregion
@@ -182,10 +182,11 @@
             $_POST['Surname'],
             $_POST['DateOfBirth'],
             $_POST['Email'],
-            $_POST['Password']
+            $_POST['Password'],
+            false
         );
 
-        $result = UserBL::Register($user);
+        $result = UserBL::Create($user);
 
 
         if ($result >= 1) {
@@ -218,6 +219,7 @@
         #endregion
         
     } else {
-        http_response_code(400);
-        echo json_encode(array('error' => 'Invalid request method'));
+        http_response_code(405);
+        echo json_encode(array('success'=> false, 'error' => 'Method not allowed'));
+        exit();
     }

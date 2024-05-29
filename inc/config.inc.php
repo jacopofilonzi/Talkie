@@ -1,6 +1,6 @@
 <?php
 
-    include_once $_SERVER["DOCUMENT_ROOT"] . "/class/dmo/user.cls.php";
+    include_once $_SERVER["DOCUMENT_ROOT"] . "/class/dmo/UserDMO.cls.php";
 
     session_start();
 
@@ -8,6 +8,8 @@
     $BaseUrl = "/R";
     $AppName = "Talkie";
     $AppIcon = "https://cdn.filonzi.it/img/logo.png";
+
+    $AllowExternal = true;
 
 
     $currentUser = null;
